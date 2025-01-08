@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"rwc/internal/counter"
-	"rwc/internal/utils"
+
+	"github.com/rubensantoniorosa2704/rwc/internal/counter"
+	"github.com/rubensantoniorosa2704/rwc/internal/utils"
 )
 
 func main() {
