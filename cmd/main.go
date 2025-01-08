@@ -22,4 +22,12 @@ func main() {
 		}
 		fmt.Printf("Número de bytes: %d\n", bytes)
 	}
+
+	if opt.CountLines {
+		lines, err := counter.CountLynes(content)
+		if err != nil {
+			log.Fatalf("Erro ao contar as linhas: %v\n", err)
+		}
+		fmt.Printf("Número de linhas: %d\n", lines)
+	}
 }
