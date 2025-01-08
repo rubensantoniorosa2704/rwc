@@ -26,3 +26,11 @@ func CountLynes(content string) (int, error) {
 
 	return lineCount, nil
 }
+
+func CountWords(content string) (int, error) {
+	trimmedContent := strings.TrimSpace(string(content))
+
+	words := strings.Fields(trimmedContent)
+
+	return len(words), nil
+}

@@ -15,19 +15,26 @@ func main() {
 	// Retrive the file content
 	content, _ := utils.ReadFile(opt.InputFile)
 
-	if opt.CountBytes {
+	switch {
+	case opt.CountBytes:
 		bytes, err := counter.CountBytes(content)
 		if err != nil {
 			log.Fatalf("Erro ao contar os bytes: %v\n", err)
 		}
 		fmt.Printf("Número de bytes: %d\n", bytes)
-	}
 
-	if opt.CountLines {
+	case opt.CountLines:
 		lines, err := counter.CountLynes(content)
 		if err != nil {
 			log.Fatalf("Erro ao contar as linhas: %v\n", err)
 		}
 		fmt.Printf("Número de linhas: %d\n", lines)
+
+	case opt.CountWords:
+		words, err := counter.CountWords(content)
+		if err != nil {
+			log.Fatalf("Erro ao contar as palavras: %v\n", err)
+		}
+		fmt.Printf("Número de palavras: %d\n", words)
 	}
 }
