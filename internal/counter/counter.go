@@ -1,36 +1,50 @@
 package counter
 
 import (
-	"errors"
+	"os"
 	"strings"
+
+	"github.com/rubensantoniorosa2704/rwc/internal/utils"
 )
 
-func CountBytes(content string) (int, error) {
-	if content == "" {
-		return 0, errors.New("conteúdo vazio")
+func CountBytes(file *os.File) (int, error) {
+
+	ch := make(chan []byte)
+	go utils.ReadFileInChunks(file, ch)
+
+	byteCount := 0
+
+	for chunk := range ch {
+		byteCount += len(chunk)
 	}
 
-	return int(len(content)), nil
+	return byteCount, nil
 }
 
-func CountLynes(content string) (int, error) {
-	if content == "" {
-		return 0, errors.New("conteúdo vazio")
-	}
+func CountLines(file *os.File) (int, error) {
+	ch := make(chan string)
+	go utils.ReadFile(file, ch)
 
-	lineCount := strings.Count(string(content), "\n")
+	lineCount := 0
 
-	if len(content) > 0 && content[len(content)-1] != '\n' {
+	for line := range ch {
+		_ = line
 		lineCount++
 	}
 
 	return lineCount, nil
 }
 
-func CountWords(content string) (int, error) {
-	trimmedContent := strings.TrimSpace(string(content))
+func CountWords(file *os.File) (int, error) {
+	ch := make(chan string)
+	go utils.ReadFile(file, ch)
 
-	words := strings.Fields(trimmedContent)
+	wordCount := 0
 
-	return len(words), nil
+	for line := range ch {
+		words := strings.Fields(line)
+		wordCount += len(words)
+	}
+
+	return wordCount, nil
 }

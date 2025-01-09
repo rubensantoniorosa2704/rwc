@@ -1,26 +1,59 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
 )
 
-func ReadFile(path string) (string, error) {
+func OpenFile(path string) (*os.File, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return "", fmt.Errorf("erro ao abrir o arquivo: %v", err)
-	}
-	defer file.Close()
-
-	content, err := io.ReadAll(file)
-	if err != nil {
-		return "", fmt.Errorf("erro ao ler o arquivo: %v", err)
+		return nil, fmt.Errorf("erro ao abrir o arquivo: %v", err)
 	}
 
-	if len(content) == 0 {
-		return "", fmt.Errorf("o arquivo '%s' está vazio", file.Name())
+	return file, nil
+}
+
+func ReadFile(file *os.File, ch chan string) {
+	defer close(ch)
+
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		linha := scanner.Text()
+		ch <- linha
 	}
 
-	return string(content), nil
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Erro ao ler o arquivo:", err)
+	}
+}
+
+func ReadFileInChunks(file *os.File, ch chan<- []byte) {
+	defer close(ch)
+
+	const bufferSize = 64 * 1024
+	buffer := make([]byte, bufferSize)
+	totalBytesRead := 0
+
+	for {
+		n, err := file.Read(buffer)
+		if err != nil && err != io.EOF {
+			fmt.Println("Erro ao ler o arquivo:", err)
+			return
+		}
+
+		if n > 0 {
+			totalBytesRead += n
+			ch <- append([]byte(nil), buffer[:n]...)
+		}
+
+		if err == io.EOF {
+			break
+		}
+	}
+
+	fmt.Printf("Total bytes read: %d\n", totalBytesRead)
 }

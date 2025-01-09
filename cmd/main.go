@@ -9,32 +9,33 @@ import (
 )
 
 func main() {
-	// Parse flags
 	opt := counter.ParseFlags()
 
-	// Retrive the file content
-	content, _ := utils.ReadFile(opt.InputFile)
+	file, err := utils.OpenFile(opt.InputFile)
+	if err != nil {
+		log.Fatalf("Erro ao abrir o arquivo: %v\n", err)
+	}
 
 	switch {
 	case opt.CountBytes:
-		bytes, err := counter.CountBytes(content)
+		byteCount, err := counter.CountBytes(file)
 		if err != nil {
 			log.Fatalf("Erro ao contar os bytes: %v\n", err)
 		}
-		fmt.Printf("Número de bytes: %d\n", bytes)
+		fmt.Printf("Número de bytes: %d\n", byteCount)
 
 	case opt.CountLines:
-		lines, err := counter.CountLynes(content)
+		lineCount, err := counter.CountLines(file)
 		if err != nil {
 			log.Fatalf("Erro ao contar as linhas: %v\n", err)
 		}
-		fmt.Printf("Número de linhas: %d\n", lines)
+		fmt.Printf("Número de linhas: %d\n", lineCount)
 
 	case opt.CountWords:
-		words, err := counter.CountWords(content)
+		wordCount, err := counter.CountWords(file)
 		if err != nil {
 			log.Fatalf("Erro ao contar as palavras: %v\n", err)
 		}
-		fmt.Printf("Número de palavras: %d\n", words)
+		fmt.Printf("Número de palavras: %d\n", wordCount)
 	}
 }
