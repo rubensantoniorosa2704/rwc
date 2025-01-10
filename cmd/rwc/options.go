@@ -1,13 +1,13 @@
-package counter
+package main
 
 import "flag"
 
 type Options struct {
-	CountBytes      bool
-	CountLines      bool
-	CountWords      bool
-	CountCharacters bool
-	InputFile       string
+	CountBytes bool
+	CountLines bool
+	CountWords bool
+	CountChar  bool
+	InputFile  string
 }
 
 func ParseFlags() Options {
@@ -24,10 +24,10 @@ func ParseFlags() Options {
 	}
 
 	return Options{
-		CountBytes:      *countBytesFlag,
-		CountLines:      *countLinesFlag,
-		CountWords:      *countWordsFlag,
-		CountCharacters: *countCharacters,
-		InputFile:       inputFile,
+		CountBytes: *countBytesFlag,
+		CountLines: *countLinesFlag,
+		CountWords: *countWordsFlag,
+		CountChar:  *countCharacters,
+		InputFile:  inputFile,
 	}
 }
