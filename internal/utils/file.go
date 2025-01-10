@@ -54,6 +54,4 @@ func ReadFileInChunks(file *os.File, ch chan<- []byte) {
 			break
 		}
 	}
-
-	fmt.Printf("Total bytes read: %d\n", totalBytesRead)
 }

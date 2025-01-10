@@ -37,5 +37,12 @@ func main() {
 			log.Fatalf("Erro ao contar as palavras: %v\n", err)
 		}
 		fmt.Printf("Número de palavras: %d\n", wordCount)
+
+	case opt.CountCharacters:
+		characterCount, err := counter.CountCharacters(file)
+		if err != nil {
+			log.Fatalf("Erro ao contar os caracteres: %v\n", err)
+		}
+		fmt.Printf("Número de caracteres: %d\n", characterCount)
 	}
 }
