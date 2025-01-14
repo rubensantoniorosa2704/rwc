@@ -4,12 +4,8 @@ import (
 	"os"
 )
 
-type ByteCount struct {
-	File *os.File
-}
-
-func (bc *ByteCount) CountBytes() (int, error) {
-	fileInfo, err := bc.File.Stat()
+func CountBytes(file *os.File) (int, error) {
+	fileInfo, err := file.Stat()
 	if err != nil {
 		return 0, err
 	}

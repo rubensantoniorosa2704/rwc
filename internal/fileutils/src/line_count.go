@@ -5,12 +5,8 @@ import (
 	"os"
 )
 
-type LineCount struct {
-	File *os.File
-}
-
-func (lc *LineCount) CountLines() (int, error) {
-	scanner := bufio.NewScanner(lc.File)
+func CountLines(file *os.File) (int, error) {
+	scanner := bufio.NewScanner(file)
 
 	lineCount := 0
 	for scanner.Scan() {

@@ -5,12 +5,8 @@ import (
 	"os"
 )
 
-type CharCount struct {
-	File *os.File
-}
-
-func (cc *CharCount) CountChar() (int, error) {
-	scanner := bufio.NewScanner(cc.File)
+func CountChar(file *os.File) (int, error) {
+	scanner := bufio.NewScanner(file)
 
 	charCount := 0
 	for scanner.Scan() {

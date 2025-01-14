@@ -6,12 +6,8 @@ import (
 	"strings"
 )
 
-type WordCount struct {
-	File *os.File
-}
-
-func (wc *WordCount) CountWords() (int, error) {
-	scanner := bufio.NewScanner(wc.File)
+func CountWords(file *os.File) (int, error) {
+	scanner := bufio.NewScanner(file)
 
 	wordCount := 0
 	for scanner.Scan() {
