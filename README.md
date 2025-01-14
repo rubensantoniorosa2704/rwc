@@ -1,17 +1,17 @@
 # Rwd Code Challenge
 
-Esta aplicação é um desafio de código que lê arquivos de texto e realiza operações como contagem de linhas, bytes e palavras.
+This application is a code challenge that reads text files and performs operations such as counting lines, bytes, and words.
 
-## Como Executar
+## How to Run
 
-Para executar a aplicação, navegue até a pasta `\rwc\cmd\rwc`, use o comando abaixo, substituindo `[OPTIONS]` pela opção desejada e `test.txt` pelo caminho do arquivo que você deseja processar:
+To run the application, navigate to the `\rwc\cmd\rwc` folder and use the command below, replacing `[OPTIONS]` with the desired option and `test.txt` with the path to the file you want to process:
 
 ```sh
 go run . [OPTION] ..\..\tests\test.txt
 ```
 
-## Opções Disponíveis:
-- `-c`: Conta o número de bytes no arquivo.
-- `-l`: Conta o número de linhas no arquivo.
-- `-w`: Conta o número de palavras no arquivo.
-- `-m`: Conta o número de caracteres no arquivo.
+## Avaliable Options:
+- `-c`: Counts the number of bytes in the file.
+- `-l`: Counts the number of lines in the file.
+- `-w`: Counts the number of words in the file.
+- `-m`: Counts the number of characters in the file.
