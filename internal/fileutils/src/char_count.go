@@ -1,22 +1,26 @@
 package fileutils
 
 import (
-	"bufio"
+	"io"
 	"os"
+	"unicode/utf8"
 )
 
 func CountChar(file *os.File) (int, error) {
-	scanner := bufio.NewScanner(file)
+	buffer := make([]byte, 4096)
+	runeCount := 0
 
-	charCount := 0
-	for scanner.Scan() {
-		line := scanner.Text()
-		charCount += len(line)
+	for {
+		bytesRead, err := file.Read(buffer)
+		if err != nil && err != io.EOF {
+			return 0, err
+		}
+		if bytesRead == 0 {
+			break
+		}
+
+		runeCount += utf8.RuneCount(buffer[:bytesRead])
 	}
 
-	if err := scanner.Err(); err != nil {
-		return 0, err
-	}
-
-	return charCount, nil
+	return runeCount, nil
 }
