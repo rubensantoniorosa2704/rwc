@@ -2,21 +2,22 @@ package fileutils
 
 import (
 	"bufio"
-	"os"
+	"fmt"
 	"strings"
 )
 
-func CountWords(file *os.File) (int, error) {
-	scanner := bufio.NewScanner(file)
+func CountWords(input string) (int, error) {
+	scanner := bufio.NewScanner(strings.NewReader(input))
+	scanner.Split(bufio.ScanWords)
+	var wordCount int = 0
 
-	wordCount := 0
 	for scanner.Scan() {
-		words := strings.Fields(scanner.Text())
-		wordCount += len(words)
+		wordCount++
 	}
 
-	if err := scanner.Err(); err != nil {
-		return 0, err
+	err := scanner.Err()
+	if err != nil {
+		return 0, fmt.Errorf("error scanning words: %w", err)
 	}
 
 	return wordCount, nil

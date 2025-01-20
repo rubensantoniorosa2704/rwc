@@ -1,14 +1,24 @@
 package fileutils
 
 import (
-	"os"
+	"bufio"
+	"fmt"
+	"strings"
 )
 
-func CountBytes(file *os.File) (int, error) {
-	fileInfo, err := file.Stat()
-	if err != nil {
-		return 0, err
+func CountBytes(input string) (int, error) {
+	scanner := bufio.NewScanner(strings.NewReader(input))
+	scanner.Split(bufio.ScanBytes)
+	var byteCount int = 0
+
+	for scanner.Scan() {
+		byteCount++
 	}
 
-	return int(fileInfo.Size()), nil
+	err := scanner.Err()
+	if err != nil {
+		return 0, fmt.Errorf("error scanning bytes: %w", err)
+	}
+
+	return byteCount, nil
 }

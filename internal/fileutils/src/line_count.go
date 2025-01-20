@@ -2,19 +2,22 @@ package fileutils
 
 import (
 	"bufio"
-	"os"
+	"fmt"
+	"strings"
 )
 
-func CountLines(file *os.File) (int, error) {
-	scanner := bufio.NewScanner(file)
+func CountLines(input string) (int, error) {
+	scanner := bufio.NewScanner(strings.NewReader(input))
+	scanner.Split(bufio.ScanLines)
+	var lineCount int = 0
 
-	lineCount := 0
 	for scanner.Scan() {
 		lineCount++
 	}
 
-	if err := scanner.Err(); err != nil {
-		return 0, err
+	err := scanner.Err()
+	if err != nil {
+		return 0, fmt.Errorf("error scanning lines: %w", err)
 	}
 
 	return lineCount, nil

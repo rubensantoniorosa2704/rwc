@@ -10,7 +10,8 @@ To run the application, navigate to the `\rwc\cmd\rwc` folder and use the comman
 go run . [OPTION] ..\..\tests\test.txt
 ```
 
-## Avaliable Options:
+## Avaliable Options
+
 - `-c`: Counts the number of bytes in the file.
 - `-l`: Counts the number of lines in the file.
 - `-w`: Counts the number of words in the file.

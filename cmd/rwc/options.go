@@ -18,9 +18,17 @@ func ParseFlags() Options {
 
 	flag.Parse()
 
+	// Check if there are additional command-line arguments and assign the first one to inputFile
 	inputFile := ""
 	if len(flag.Args()) > 0 {
 		inputFile = flag.Args()[0]
+	}
+
+	// Set default flags if none are provided
+	if !*countBytesFlag && !*countLinesFlag && !*countWordsFlag && !*countCharacters {
+		*countBytesFlag = true
+		*countLinesFlag = true
+		*countWordsFlag = true
 	}
 
 	return Options{
