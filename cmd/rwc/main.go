@@ -13,18 +13,23 @@ func main() {
 	// Retrieve available flags
 	opt := ParseFlags()
 
-	var file io.Reader
+	var file io.Reader     // Declare a variable for the file reader
+	var inputSource string // Variable to store input source for printing
 
 	if opt.InputFile != "" {
 		// Try to open the provided file
-		file, err := os.Open(opt.InputFile)
+		f, err := os.Open(opt.InputFile)
 		if err != nil {
 			fmt.Printf("Error opening file: %v", err)
 			return
 		}
-		defer file.Close()
+		defer f.Close()
+		file = f
+		inputSource = opt.InputFile // Name of the input file for printing
 	} else {
+		// Use stdin if no file is provided
 		file = os.Stdin
+		inputSource = "stdin" // Indicate that the input is from stdin
 	}
 
 	// Initialize counters
@@ -46,9 +51,12 @@ func main() {
 		strategiesMap["lines"] = strategies.LineCount{}
 	}
 
-	scanner := bufio.NewScanner(file)
 	counts := make(map[string]int)
 
+	// Create a scanner to read the file or stdin
+	scanner := bufio.NewScanner(file)
+
+	// Process each line in the input
 	for scanner.Scan() {
 		line := scanner.Text()
 		lineCount++
@@ -58,8 +66,9 @@ func main() {
 		}
 	}
 
+	// Check for reading errors
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error reading file: %v\n", err)
+		fmt.Printf("Error reading input: %v\n", err)
 		return
 	}
 
@@ -76,5 +85,7 @@ func main() {
 	if opt.CountChar {
 		fmt.Printf(" %d", counts["chars"])
 	}
-	fmt.Printf(" %s\n", opt.InputFile)
+
+	// Print the input source (filename or 'stdin')
+	fmt.Printf(" %s\n", inputSource)
 }
