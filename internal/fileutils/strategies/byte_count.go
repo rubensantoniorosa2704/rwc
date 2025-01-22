@@ -1,12 +1,28 @@
 package strategies
 
 import (
-	fileutils "github.com/rubensantoniorosa2704/rwc/internal/fileutils/src"
+	"bufio"
+	"fmt"
+	"strings"
 )
 
 type ByteCount struct{}
 
-func (b ByteCount) Count(line string) int {
-	bytes, _ := fileutils.CountBytes(line)
-	return bytes
+func (b ByteCount) Count(ch <-chan string) (int, error) {
+	var byteCount int
+
+	for input := range ch {
+		scanner := bufio.NewScanner(strings.NewReader(input))
+		scanner.Split(bufio.ScanBytes)
+
+		for scanner.Scan() {
+			byteCount++
+		}
+
+		if err := scanner.Err(); err != nil {
+			return 0, fmt.Errorf("error scanning bytes: %w", err)
+		}
+	}
+
+	return byteCount, nil
 }

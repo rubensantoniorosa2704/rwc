@@ -1,5 +1,5 @@
 package strategies
 
 type CounterStrategy interface {
-	Count(string) int
+	Count(<-chan string) (int, error)
 }
