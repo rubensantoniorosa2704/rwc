@@ -9,18 +9,19 @@ import (
 type WordCount struct{}
 
 func (w WordCount) Count(ch <-chan string) (int, error) {
-	input := <-ch
-	scanner := bufio.NewScanner(strings.NewReader(input))
-	scanner.Split(bufio.ScanWords)
 	var wordCount int = 0
 
-	for scanner.Scan() {
-		wordCount++
-	}
+	for input := range ch { // Itera sobre todas as linhas enviadas ao canal
+		scanner := bufio.NewScanner(strings.NewReader(input))
+		scanner.Split(bufio.ScanWords)
 
-	err := scanner.Err()
-	if err != nil {
-		return 0, fmt.Errorf("error scanning words: %w", err)
+		for scanner.Scan() {
+			wordCount++
+		}
+
+		if err := scanner.Err(); err != nil {
+			return 0, fmt.Errorf("error scanning words: %w", err)
+		}
 	}
 
 	return wordCount, nil

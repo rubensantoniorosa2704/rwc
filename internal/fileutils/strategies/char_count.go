@@ -9,18 +9,19 @@ import (
 type CharCount struct{}
 
 func (w CharCount) Count(ch <-chan string) (int, error) {
-	input := <-ch
-	scanner := bufio.NewScanner(strings.NewReader(input))
-	scanner.Split(bufio.ScanRunes)
-	var charCount int = 0
+	var charCount int
 
-	for scanner.Scan() {
-		charCount++
-	}
+	for input := range ch { // Itera sobre todas as entradas enviadas ao canal
+		scanner := bufio.NewScanner(strings.NewReader(input))
+		scanner.Split(bufio.ScanRunes)
 
-	err := scanner.Err()
-	if err != nil {
-		return 0, fmt.Errorf("error scanning char: %w", err)
+		for scanner.Scan() {
+			charCount++
+		}
+
+		if err := scanner.Err(); err != nil {
+			return 0, fmt.Errorf("error scanning char: %w", err)
+		}
 	}
 
 	return charCount, nil
